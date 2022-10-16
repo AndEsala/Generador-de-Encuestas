@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="includes/head.html :: head"></head>
+<body>
+    <header>
+        <nav th:insert="includes/nav.html :: nav"></nav>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="m-3">
+        <div class="container">
+            <h1 class="text-center">
+                <span class="badge bg-dark">Encuesta [[ ${encuestaEdit.name} ]]</span>
+            </h1>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:text="${encuestaEdit.id}"></td>
+                        <td th:text="${encuestaEdit.name}"></td>
+                        <td th:text="${encuestaEdit.description}"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h1 class="text-center">
+                <span class="badge bg-dark">Preguntas</span>
+            </h1>
+
+            <a th:href="@{/encuesta/edit/{ide}/add-pregunta (ide = ${encuestaEdit.id})}" class="btn btn-primary">Agregar Pregunta</a>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="pregunta : ${encuestaEdit.preguntas}">
+                        <td th:text="${pregunta.id}"></td>
+                        <td th:text="${pregunta.description}"></td>
+                        <td th:text="${pregunta.tipo == 1} ? 'Cerrada' : 'Abierta'"></td>
+                        <td>
+                            <a th:href="@{/encuesta/edit/{ide}/pregunta/{idp} (ide = ${encuestaEdit.id}, idp = ${pregunta.id})}" class="btn btn-warning">
+                                <i class="fa-solid fa-pencil"></i>
+                            </a>
+                            
+                            <a th:href="@{/encuesta/delete/{ide}/pregunta/{idp} (ide = ${encuestaEdit.id}, idp = ${pregunta.id})}" class="btn btn-danger">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <!-- Fin - Contenido Principal -->
+
+    <footer th:insert="includes/footer.html :: footer"></footer>
+</body>
+</html>

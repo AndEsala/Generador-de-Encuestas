@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="includes/head.html :: head"></head>
+<body>
+    <header>
+        <nav th:insert="includes/nav.html :: nav"></nav>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main>
+        <div class="container mt-3 mb-3">
+            <h1 class="text-center">
+                <span class="badge bg-dark">[[ ${respuesta.encuesta.name} ]]</span>
+            </h1>
+
+            <div class="mb-3">
+                <label for="" class="form-label">Nombre:</label>
+                <input type="text" th:value="${respuesta.nombre}" class="form-control" disabled>
+            </div>
+            
+            <div class="mb-3">
+                <label for="" class="form-label">Correo:</label>
+                <input type="email" th:value="${respuesta.email}" class="form-control" disabled>
+            </div>
+
+            <div class="preguntas">
+                <div th:each="res, iterStat : ${respuesta.respuestas}">
+                    <div th:if="${res.pregunta.tipo == 1}" class="mb-3">
+                        <label th:text="${res.pregunta.description}" class="form-label"></label>
+                        
+                        <select class="form-select" th:field="*{respuesta.respuestas[__${iterStat.index}__].respuesta}" aria-label="Default select example" disabled>
+                            <option th:each="option : ${res.pregunta.opciones}" th:value="${option.respuesta}">[[ ${option.respuesta} ]]</option>
+                        </select>
+                    </div>
+
+                    <div th:unless="${res.pregunta.tipo == 1}" class="mb-3">
+                        <label th:text="${res.pregunta.description}" class="form-label"></label>
+
+                        <textarea class="form-control" th:field="*{respuesta.respuestas[__${iterStat.index}__].respuesta}" cols="30" rows="5" disabled></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Fin - Contenido Principal -->
+    
+    <footer th:insert="includes/footer.html :: footer"></footer>
+</body>
+</html>
